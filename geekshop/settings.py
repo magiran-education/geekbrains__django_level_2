@@ -128,6 +128,8 @@ AUTH_USER_MODEL = 'authapp.User'
 
 LOGIN_URL = '/auth/login/'
 
+DOMAIN_NAME = 'http://127.0.0.1:8000'
+
 # post settings
 # EMAIL_HOST = 'localhost'
 # EMAIL_PORT = '25'
@@ -136,3 +138,7 @@ LOGIN_URL = '/auth/login/'
 # EMAIL_USE_SSL = False
 # EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
+EMAIL_HOST = 'smtp.mailtrap.io'
+EMAIL_HOST_USER = 'e8b884b37dc494'
+EMAIL_HOST_PASSWORD = 'b736137d813c3d'
+EMAIL_PORT = '2525'
