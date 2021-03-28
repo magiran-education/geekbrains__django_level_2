@@ -1,7 +1,7 @@
 from django.conf import settings
 from django.core.mail import send_mail
 from django.shortcuts import render, HttpResponseRedirect
-from django.contrib import auth
+from django.contrib import auth, messages
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
@@ -59,8 +59,10 @@ def register(request):
         if form.is_valid():
             user = form.save()
             if send_verify_mail(user):
+                messages.success(request, f'Письмо с валидацией аккаунта отправлено на почту {user.email}.')
                 return HttpResponseRedirect(reverse('authapp:login'))
             else:
+                messages.success(request, f'Ошибка отправки письма с валидацией аккаунта.')
                 return HttpResponseRedirect(reverse('authapp:login'))
     else:
         form = UserRegisterForm()
