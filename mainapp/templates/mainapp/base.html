@@ -38,9 +38,19 @@
                 </li>
                 {% if user.is_authenticated %}
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'auth:profile' %}">{{ user.username }}
-                            <i class="fas fa-user-circle"></i>
-                        </a>
+                        <div class="dropdown">
+                            <a href="" class="nav-link dropdown-toggle" data-toggle="dropdown">
+                                {{ user.username|default:'Пользователь' }}
+                                <span class="caret"></span>
+                            </a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="nav-link text-dark" href="{% url 'auth:profile' %}">
+                                        Профиль
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
                     </li>
                     {% if user.is_staff or user.is_superuser %}
                         <li class="nav-item">
