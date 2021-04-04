@@ -5,9 +5,10 @@ from django.contrib import auth, messages
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
-from authapp.forms import UserLoginForm, UserRegisterForm, UserProfileForm
+from authapp.forms import UserLoginForm, UserRegisterForm, UserProfileForm, UserProfileEditForm
 from authapp.models import User
 from basketapp.models import Basket
+from django.db import transaction
 
 
 def send_verify_mail(user):
@@ -74,19 +75,49 @@ def register(request):
 def profile(request):
     user = request.user
     if request.method == 'POST':
-        form = UserProfileForm(data=request.POST, files=request.FILES, instance=user)
-        if form.is_valid():
-            form.save()
+        user_form = UserProfileForm(data=request.POST, files=request.FILES, instance=user)
+        user_profile_form = UserProfileEditForm(data=request.POST, files=request.FILES, instance=user.userprofile)
+        if user_form.is_valid() and user_profile_form.is_valid():
+            with transaction.atomic():
+                user_form.save()
             return HttpResponseRedirect(reverse('auth:profile'))
     else:
-        form = UserProfileForm(instance=user)
+        user_form = UserProfileForm(instance=user)
+        user_profile_form = UserProfileEditForm(instance=user.userprofile)
     context = {
-        'form': form,
+        'user_form': user_form,
+        'user_profile_form': user_profile_form,
         'baskets': Basket.objects.filter(user=user),
     }
     return render(request, 'authapp/profile.html', context)
 
 
+# @login_required
+# def profile(request):
+#     user = request.user
+#     if request.method == 'POST':
+#         form = UserProfileForm(data=request.POST, files=request.FILES, instance=user)
+#         if form.is_valid():
+#             form.save()
+#             return HttpResponseRedirect(reverse('auth:profile'))
+#     else:
+#         form = UserProfileForm(instance=user)
+#     context = {
+#         'form': form,
+#         'baskets': Basket.objects.filter(user=user),
+#     }
+#     return render(request, 'authapp/profile.html', context)
+
+
 def logout(request):
     auth.logout(request)
     return HttpResponseRedirect(reverse('index'))
+
+
+# @transaction.atomic
+# def edit(request):
+#     # title = 'Редактирование'
+#
+#     if request.method == 'POST':
+#         edit_form = UserProfileEditForm(data=request.POST, files=request.FILES, instance=request.user)
+
