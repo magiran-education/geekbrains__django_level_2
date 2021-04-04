@@ -51,6 +51,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social_django.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'geekshop.urls'
@@ -67,6 +68,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'authapp.context_processors.author',
+                'social_django.context_processors.backends',
+                'social_django.context_processors.login_redirect',
             ],
         },
     },
@@ -143,15 +146,26 @@ LOGIN_URL = '/auth/login/'
 
 DOMAIN_NAME = 'http://127.0.0.1:8000'
 
-# post settings
-# EMAIL_HOST = 'localhost'
-# EMAIL_PORT = '25'
-# EMAIL_HOST_USER = 'user'
-# EMAIL_HOST_PASSWORD = 'password'
-# EMAIL_USE_SSL = False
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-
 EMAIL_HOST = 'smtp.mailtrap.io'
 EMAIL_HOST_USER = 'e8b884b37dc494'
 EMAIL_HOST_PASSWORD = 'b736137d813c3d'
 EMAIL_PORT = '2525'
+
+# advanced auth
+LOGIN_ERROR_URL = '/'  # куда переадресовывать в случае ошибки
+
+SOCIAL_AUTH_VK_OAUTH2_IGNORE_DEFAULT_SCOPE = True  # выкл.стандартную аутентификацию
+SOCIAL_AUTH_VK_OAUTH2_SCOPE = ['email']  # вкл.аутентификацию по email
+
+SOCIAL_AUTH_PIPELINE = (
+    'social_core.pipeline.social_auth.social_details',
+    'social_core.pipeline.social_auth.social_uid',
+    'social_core.pipeline.social_auth.auth_allowed',
+    'social_core.pipeline.social_auth.social_user',
+    'social_core.pipeline.user.create_user',
+    'social_core.pipeline.social_auth.associate_user',
+    'social_core.pipeline.social_auth.load_extra_data',
+    'social_core.pipeline.user.user_details',
+    'authapp.pipeline.save_user_profile',
+)
+
