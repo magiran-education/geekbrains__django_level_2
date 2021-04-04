@@ -66,9 +66,10 @@ class UserProfileForm(UserChangeForm):
 class UserProfileEditForm(forms.ModelForm):
     class Meta:
         model = UserProfile
-        fields = ('tagline', 'gender', 'about_me')
+        fields = ('tagline', 'gender', 'about_me', 'page_in_vkontakte')
 
     def __init__(self, *args, **kwargs):
         super(UserProfileEditForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field.widget.attrs['class'] = 'form-control'
+        self.fields['page_in_vkontakte'].widget.attrs['readonly'] = True

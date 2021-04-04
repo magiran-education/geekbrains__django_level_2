@@ -32,6 +32,7 @@ class UserProfile(models.Model):
     tagline = models.CharField(verbose_name='Теги', max_length=128, blank=True)
     about_me = models.TextField(verbose_name='О себе', max_length=512, blank=True)
     gender = models.CharField(verbose_name='Пол', max_length=128, choices=GENDER_CHOICES, blank=True)
+    page_in_vkontakte = models.CharField(verbose_name='Страница во ВКонтакте', max_length=128, blank=True)
 
     @receiver(post_save, sender=User)
     def create_user_profile(sender, instance, created, **kwargs):
