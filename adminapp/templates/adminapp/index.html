@@ -9,7 +9,10 @@
     <meta name="description" content=""/>
     <meta name="author" content=""/>
     <title>GeekShop - Admin</title>
-    <link href="{% static 'css/auth-admin.css' %}" rel="stylesheet"/>
+    <link rel="stylesheet" href="{% static 'css/auth-admin.css' %}">
+<!--    <link href="{% static 'css/auth-admin.css' %}" rel="stylesheet" />-->
+<!--    <link href="/static/css/auth-admin.css" rel="stylesheet"/>-->
+<!--    <link href="{% static 'css/auth-admin.css' %}" rel="stylesheet"/>-->
     <link href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css" rel="stylesheet"
           crossorigin="anonymous"/>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/js/all.min.js"
@@ -47,24 +50,31 @@
             <div class="sb-sidenav-menu">
                 <div class="nav">
                     <div class="sb-sidenav-menu-heading">Приложения</div>
-                    <a class="nav-link" href="{% url 'admin_staff:admin_users' %}">
-                        <div class="sb-nav-link-icon">
-                            <i class="fas fa-users"></i>
-                        </div>
-                        Пользователи
-                    </a>
-                    <a class="nav-link" href="index.html">
-                        <div class="sb-nav-link-icon">
-                            <i class="fas fa-shopping-basket"></i>
-                        </div>
-                        Категории
-                    </a>
-                    <a class="nav-link" href="index.html">
+<!--                    <a class="nav-link" href="{% url 'admin_staff:admin_users' %}">-->
+<!--                        <div class="sb-nav-link-icon">-->
+<!--                            <i class="fas fa-users"></i>-->
+<!--                        </div>-->
+<!--                        Пользователи-->
+<!--                    </a>-->
+<!--                    <a class="nav-link" href="index.html">-->
+<!--                        <div class="sb-nav-link-icon">-->
+<!--                            <i class="fas fa-shopping-basket"></i>-->
+<!--                        </div>-->
+<!--                        Категории-->
+<!--                    </a>-->
+<!--                    <a class="nav-link" href="index.html">-->
+<!--                        <div class="sb-nav-link-icon">-->
+<!--                            <i class="fas fa-tshirt"></i>-->
+<!--                        </div>-->
+<!--                        Продукты-->
+<!--                    </a>-->
+                    <a class="nav-link" href="{% url 'ordersapp:orders_list' %}">
                         <div class="sb-nav-link-icon">
                             <i class="fas fa-tshirt"></i>
                         </div>
-                        Продукты
+                        Список заказов
                     </a>
+
                 </div>
             </div>
             <div class="sb-sidenav-footer"></div>
@@ -74,7 +84,8 @@
         <main>
             <div class="container-fluid">
                 <h1 class="mt-4">Административная панель</h1>
-
+                {% block content %}
+                {% endblock %}
             </div>
         </main>
         <footer class="py-4 bg-light mt-auto">
