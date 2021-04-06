@@ -7,7 +7,7 @@ class OrderForm(forms.ModelForm):
         model = Order
         exclude = ('user',)
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         super(OrderForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
             field_name.widget.attrs['class'] = 'form-control'
@@ -18,7 +18,7 @@ class OrderItemsForm(forms.ModelForm):
         model = OrderItem
         exclude = ()
 
-    def __init__(self):
+    def __init__(self, *args, **kwargs):
         super(OrderItemsForm, self).__init__(*args, **kwargs)
         for field_name, field in self.fields.items():
-            field_name.widget.attrs['class'] = 'form-control'
+            field.widget.attrs['class'] = 'form-control'
