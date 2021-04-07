@@ -88,11 +88,6 @@ def order_forming_complete(request, pk):
     return HttpResponseRedirect(reverse('ordersapp:orders_list'))
 
 
-
-
-
-
-
 class OrderUpdate(LoginRequiredMixin, UpdateView):
     model = Order
     fields = []
