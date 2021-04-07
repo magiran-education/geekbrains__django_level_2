@@ -2,9 +2,13 @@ from django.shortcuts import HttpResponseRedirect
 from django.http import JsonResponse
 from django.template.loader import render_to_string
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 
 from mainapp.models import Product
 from basketapp.models import Basket
+
+from django.views.generic import DeleteView, CreateView
 
 
 @login_required
@@ -24,11 +28,20 @@ def basket_add(request, product_id=None):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
-@login_required
-def basket_delete(request, id=None):
-    basket = Basket.objects.get(id=id)
-    basket.delete()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+# @login_required
+# def basket_delete(request, id=None):
+#     basket = Basket.objects.get(id=id)
+#     basket.delete()
+#     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+class BasketDelete(LoginRequiredMixin, DeleteView):
+    model = Basket
+    success_url = reverse_lazy('auth:profile')
+
+    # наверно, не самая лучшая идея в GET запускать POST метод
+    def get(self, *args, **kwargs):
+        return self.post(*args, **kwargs)
 
 
 @login_required
