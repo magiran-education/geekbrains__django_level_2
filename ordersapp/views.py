@@ -1,8 +1,9 @@
 from django.db import transaction
 from django.forms import inlineformset_factory
-from django.shortcuts import render
-from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView
+from django.http import HttpResponseRedirect
+from django.shortcuts import render, get_object_or_404
+from django.urls import reverse_lazy, reverse
+from django.views.generic import ListView, CreateView, DeleteView, DetailView
 
 from basketapp.models import Basket
 from .models import Order, OrderItem
@@ -64,22 +65,30 @@ class OrderCreate(LoginRequiredMixin, CreateView):
             return super(OrderCreate, self).form_valid(form)
 
 
+class OrderDelete(DeleteView):
+    model = Order
+    success_url = reverse_lazy('orders:orders_list')
 
 
+class OrderRead(DetailView):
+    model = Order
+
+    # добавление в контекст элемента. в моём проекте не используется.
+    def get_context_data(self, **kwargs):
+        context = super(OrderRead, self).get_context_data(**kwargs)
+        context['title'] = 'Заказ / просмотр'
+        return context
 
 
+def order_forming_complete(request, pk):
+    order = get_object_or_404(Order, pk=pk)
+    order.status = Order.SENT_TO_PROCEED
+    order.save()
 
-def order_forming_complete():
-    pass
+    return HttpResponseRedirect(reverse('ordersapp:orders_list'))
 
 
-class OrderRead(ListView):
-    pass
 
 
 class OrderItemsUpdate(ListView):
-    pass
-
-
-class OrderDelete(ListView):
     pass
